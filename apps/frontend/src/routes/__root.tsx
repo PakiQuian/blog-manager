@@ -12,7 +12,7 @@ function RootLayout() {
       <QueryClientProvider client={queryClient}>
         <div className="min-h-svh flex flex-col">
           <header className="border-b border-neutral-200 dark:border-neutral-800">
-            <nav className="mx-auto max-w-5xl flex items-center justify-between px-4 py-3">
+            <nav className="mx-auto max-w-5xl flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3">
               <Link to="/" className="font-semibold text-lg">
                 Blog Manager
               </Link>
