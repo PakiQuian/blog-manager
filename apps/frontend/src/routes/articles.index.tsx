@@ -13,6 +13,7 @@ import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { useDeleteArticle, useOwnArticles } from "../lib/articles";
+import { requireSession } from "../lib/route-guards";
 
 const searchSchema = z.object({
   page: z.coerce.number().int().min(1).catch(1),
@@ -20,6 +21,7 @@ const searchSchema = z.object({
 
 export const Route = createFileRoute("/articles/")({
   validateSearch: searchSchema,
+  beforeLoad: requireSession,
   component: ArticlesListPage,
 });
 
@@ -60,10 +62,10 @@ function ArticlesListPage() {
           {data.items.map((article) => (
             <div
               key={article._id}
-              className="border border-neutral-200 dark:border-neutral-800 rounded-medium p-4 flex items-center justify-between gap-4"
+              className="border border-neutral-200 dark:border-neutral-800 rounded-medium p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
             >
-              <div>
-                <h2 className="font-medium">{article.title}</h2>
+              <div className="min-w-0">
+                <h2 className="font-medium break-words">{article.title}</h2>
                 <p className="text-sm text-neutral-500">
                   {new Date(article.createdAt).toLocaleDateString()}
                 </p>

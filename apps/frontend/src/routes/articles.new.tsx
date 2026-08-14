@@ -1,8 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArticleForm } from "../components/ArticleForm";
 import { useCreateArticle } from "../lib/articles";
+import { requireSession } from "../lib/route-guards";
 
 export const Route = createFileRoute("/articles/new")({
+  beforeLoad: requireSession,
   component: NewArticlePage,
 });
 
