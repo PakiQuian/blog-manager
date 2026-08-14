@@ -1,0 +1,15 @@
+{
+  "name": "blog-manager",
+  "private": true,
+  "workspaces": [
+    "apps/backend",
+    "apps/frontend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=apps/backend & npm run dev --workspace=apps/frontend",
+    "dev:backend": "npm run dev --workspace=apps/backend",
+    "dev:frontend": "npm run dev --workspace=apps/frontend",
+    "dev:db": "docker-compose up -d",
+    "dev:db:down": "docker-compose down"
+  }
+}
