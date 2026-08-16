@@ -33,7 +33,7 @@ export function ArticleForm({ defaultValues, submitLabel, onSubmit }: ArticleFor
         e.stopPropagation();
         form.handleSubmit();
       }}
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-6"
     >
       <form.Field name="title" validators={{ onChange: articleInputSchema.shape.title }}>
         {(field) => (
@@ -52,7 +52,7 @@ export function ArticleForm({ defaultValues, submitLabel, onSubmit }: ArticleFor
         {(field) => (
           <Textarea
             label="Contenido"
-            minRows={8}
+            minRows={10}
             value={field.state.value}
             onBlur={field.handleBlur}
             onChange={(e) => field.handleChange(e.target.value)}
@@ -64,14 +64,29 @@ export function ArticleForm({ defaultValues, submitLabel, onSubmit }: ArticleFor
 
       <form.Field name="coverImageUrl" validators={{ onChange: articleInputSchema.shape.coverImageUrl }}>
         {(field) => (
-          <Input
-            label="URL de imagen de portada (opcional)"
-            value={field.state.value}
-            onBlur={field.handleBlur}
-            onChange={(e) => field.handleChange(e.target.value)}
-            isInvalid={field.state.meta.errors.length > 0}
-            errorMessage={fieldErrorMessage(field.state.meta.errors)}
-          />
+          <div className="flex flex-col gap-2">
+            <Input
+              label="URL de imagen de portada (opcional)"
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(e.target.value)}
+              isInvalid={field.state.meta.errors.length > 0}
+              errorMessage={fieldErrorMessage(field.state.meta.errors)}
+            />
+            {field.state.value && field.state.meta.errors.length === 0 && (
+              <img
+                src={field.state.value}
+                alt=""
+                className="h-32 w-56 max-w-full rounded-medium border border-divider object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+                onLoad={(e) => {
+                  e.currentTarget.style.display = "block";
+                }}
+              />
+            )}
+          </div>
         )}
       </form.Field>
 
@@ -79,7 +94,7 @@ export function ArticleForm({ defaultValues, submitLabel, onSubmit }: ArticleFor
 
       <form.Subscribe selector={(state) => state.isSubmitting}>
         {(isSubmitting) => (
-          <Button type="submit" color="primary" isLoading={isSubmitting}>
+          <Button type="submit" color="primary" isLoading={isSubmitting} className="w-fit">
             {submitLabel}
           </Button>
         )}

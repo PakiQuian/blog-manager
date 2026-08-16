@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArticleForm } from "../components/ArticleForm";
 import { useArticle, useUpdateArticle } from "../lib/articles";
 import { requireSession } from "../lib/route-guards";
@@ -15,20 +15,42 @@ function EditArticlePage() {
   const updateArticle = useUpdateArticle(id);
 
   if (isLoading) {
-    return <p className="text-neutral-500">Cargando artículo...</p>;
+    return (
+      <div className="max-w-2xl mx-auto flex flex-col gap-8 animate-pulse">
+        <div className="flex flex-col gap-2">
+          <div className="h-8 w-56 rounded bg-content2" />
+          <div className="h-4 w-72 rounded bg-content2" />
+        </div>
+        <div className="h-14 rounded-medium bg-content2" />
+        <div className="h-40 rounded-medium bg-content2" />
+        <div className="h-14 rounded-medium bg-content2" />
+      </div>
+    );
   }
 
-  if (isError || !article) {
-    return <p className="text-danger">No se pudo cargar el artículo.</p>;
-  }
-
-  if (!article.isOwner) {
-    return <p className="text-danger">No tenés permiso para editar este artículo.</p>;
+  if (isError || !article || !article.isOwner) {
+    return (
+      <div className="max-w-2xl mx-auto flex flex-col gap-3">
+        <p className="text-danger">
+          {!article || isError
+            ? "No se pudo cargar el artículo."
+            : "No tenés permiso para editar este artículo."}
+        </p>
+        <Link to="/profile" className="text-primary text-sm font-medium w-fit">
+          Volver a mi perfil
+        </Link>
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-6">Editar artículo</h1>
+    <div className="max-w-2xl mx-auto flex flex-col gap-8">
+      <header>
+        <h1 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+          Editar artículo
+        </h1>
+        <p className="text-foreground/60 text-sm mt-1">Los cambios se guardan al confirmar.</p>
+      </header>
       <ArticleForm
         defaultValues={{
           title: article.title,
@@ -38,7 +60,7 @@ function EditArticlePage() {
         submitLabel="Guardar cambios"
         onSubmit={async (value) => {
           await updateArticle.mutateAsync(value);
-          await navigate({ to: "/articles" });
+          await navigate({ to: "/profile" });
         }}
       />
     </div>
