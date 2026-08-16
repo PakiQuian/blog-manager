@@ -7,6 +7,7 @@ export interface Article {
   createdAt: string;
   updatedAt?: string;
   authorName?: string;
+  authorId?: string;
   isOwner?: boolean;
 }
 

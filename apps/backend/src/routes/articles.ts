@@ -81,6 +81,7 @@ articles.get("/:id", async (c) => {
     coverImageUrl: article.coverImageUrl,
     createdAt: article.createdAt,
     authorName: author?.name ?? "Autor desconocido",
+    authorId: article.userId,
     isOwner,
   });
 });

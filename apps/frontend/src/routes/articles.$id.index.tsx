@@ -11,7 +11,7 @@ import { button as buttonStyles } from "@heroui/theme";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useArticle, useDeleteArticle } from "../lib/articles";
 
-export const Route = createFileRoute("/articles/$id")({
+export const Route = createFileRoute("/articles/$id/")({
   component: ArticleDetailPage,
 });
 
@@ -23,11 +23,31 @@ function ArticleDetailPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   if (isLoading) {
-    return <p className="text-neutral-500">Cargando artículo...</p>;
+    return (
+      <div className="max-w-2xl mx-auto flex flex-col gap-6 animate-pulse">
+        <div className="aspect-video w-full rounded-large bg-content2" />
+        <div className="flex flex-col gap-2">
+          <div className="h-9 w-3/4 rounded bg-content2" />
+          <div className="h-4 w-40 rounded bg-content2" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="h-4 w-full rounded bg-content2" />
+          <div className="h-4 w-full rounded bg-content2" />
+          <div className="h-4 w-2/3 rounded bg-content2" />
+        </div>
+      </div>
+    );
   }
 
   if (isError || !article) {
-    return <p className="text-danger">No se pudo encontrar el artículo.</p>;
+    return (
+      <div className="max-w-2xl mx-auto flex flex-col gap-3">
+        <p className="text-danger">No pudimos encontrar ese artículo.</p>
+        <Link to="/search" className="text-primary text-sm font-medium w-fit">
+          Volver a buscar
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -36,21 +56,38 @@ function ArticleDetailPage() {
         <img
           src={article.coverImageUrl}
           alt=""
-          className="w-full rounded-medium mb-6 object-cover max-h-80"
+          className="w-full rounded-large mb-6 object-cover max-h-96"
         />
       )}
-      <h1 className="text-3xl font-semibold mb-2">{article.title}</h1>
-      <p className="text-sm text-neutral-500 mb-6">
-        {article.authorName} · {new Date(article.createdAt).toLocaleDateString()}
+      <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-2">
+        {article.title}
+      </h1>
+      <p className="text-sm text-foreground/60 mb-6">
+        {article.authorId ? (
+          <Link
+            to="/authors/$id"
+            params={{ id: article.authorId }}
+            className="hover:text-primary transition-colors font-medium"
+          >
+            {article.authorName}
+          </Link>
+        ) : (
+          article.authorName
+        )}{" "}
+        · {new Date(article.createdAt).toLocaleDateString()}
       </p>
-      <div className="whitespace-pre-wrap">{article.content}</div>
+      <div className="whitespace-pre-wrap leading-relaxed text-foreground">{article.content}</div>
 
       {article.isOwner && (
         <div className="flex gap-2 mt-8">
-          <Link to="/articles/$id/edit" params={{ id }} className={buttonStyles({ variant: "flat" })}>
+          <Link
+            to="/articles/$id/edit"
+            params={{ id }}
+            className={buttonStyles({ variant: "bordered" })}
+          >
             Editar
           </Link>
-          <Button color="danger" variant="flat" onPress={onOpen}>
+          <Button color="danger" variant="light" onPress={onOpen}>
             Eliminar
           </Button>
         </div>
@@ -74,7 +111,7 @@ function ArticleDetailPage() {
                   onPress={async () => {
                     await deleteArticle.mutateAsync(id);
                     onClose();
-                    await navigate({ to: "/articles" });
+                    await navigate({ to: "/profile" });
                   }}
                 >
                   Eliminar
