@@ -4,4 +4,13 @@
 
 body {
   margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  color: #16170C;
+  background: #FFFFFF;
+}
+
+h1, h2 {
+  font-family: "Fraunces", Georgia, serif;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
