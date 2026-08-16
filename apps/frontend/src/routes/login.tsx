@@ -10,7 +10,7 @@ export const Route = createFileRoute("/login")({
   beforeLoad: async () => {
     const { data } = await authClient.getSession();
     if (data) {
-      throw redirect({ to: "/articles" });
+      throw redirect({ to: "/profile" });
     }
   },
   component: LoginPage,
@@ -29,13 +29,18 @@ function LoginPage() {
         setFormError(error.message ?? "No se pudo iniciar sesión");
         return;
       }
-      await navigate({ to: "/articles" });
+      await navigate({ to: "/profile" });
     },
   });
 
   return (
-    <div className="max-w-sm mx-auto mt-8">
-      <h1 className="text-2xl font-semibold mb-6">Iniciar sesión</h1>
+    <div className="max-w-sm mx-auto mt-8 sm:mt-16 flex flex-col gap-8 sm:border sm:border-divider sm:rounded-large sm:p-8">
+      <header>
+        <h1 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+          Iniciar sesión
+        </h1>
+        <p className="text-foreground/60 text-sm mt-1">Entrá para gestionar tus artículos.</p>
+      </header>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -82,9 +87,9 @@ function LoginPage() {
           )}
         </form.Subscribe>
       </form>
-      <p className="text-sm mt-4 text-neutral-500">
+      <p className="text-sm text-foreground/60">
         ¿No tenés cuenta?{" "}
-        <Link to="/register" className="underline">
+        <Link to="/register" className="text-primary font-medium">
           Registrate
         </Link>
       </p>

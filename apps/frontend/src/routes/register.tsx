@@ -10,7 +10,7 @@ export const Route = createFileRoute("/register")({
   beforeLoad: async () => {
     const { data } = await authClient.getSession();
     if (data) {
-      throw redirect({ to: "/articles" });
+      throw redirect({ to: "/profile" });
     }
   },
   component: RegisterPage,
@@ -33,13 +33,18 @@ function RegisterPage() {
         setFormError(error.message ?? "No se pudo crear la cuenta");
         return;
       }
-      await navigate({ to: "/articles" });
+      await navigate({ to: "/profile" });
     },
   });
 
   return (
-    <div className="max-w-sm mx-auto mt-8">
-      <h1 className="text-2xl font-semibold mb-6">Crear cuenta</h1>
+    <div className="max-w-sm mx-auto mt-8 sm:mt-16 flex flex-col gap-8 sm:border sm:border-divider sm:rounded-large sm:p-8">
+      <header>
+        <h1 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+          Crear cuenta
+        </h1>
+        <p className="text-foreground/60 text-sm mt-1">Registrate para empezar a escribir.</p>
+      </header>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -100,9 +105,9 @@ function RegisterPage() {
           )}
         </form.Subscribe>
       </form>
-      <p className="text-sm mt-4 text-neutral-500">
+      <p className="text-sm text-foreground/60">
         ¿Ya tenés cuenta?{" "}
-        <Link to="/login" className="underline">
+        <Link to="/login" className="text-primary font-medium">
           Iniciá sesión
         </Link>
       </p>
