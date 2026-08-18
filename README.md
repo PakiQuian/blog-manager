@@ -4,15 +4,17 @@ Prueba técnica — Fullstack Developer Trainee/Junior. Aplicación web para ges
 
 ## Stack
 
-| Área | Tecnología |
-|---|---|
-| Frontend | React + TypeScript + Vite + HeroUI |
-| Datos y routing (frontend) | TanStack Query + TanStack Router |
-| Formularios | TanStack Form + Zod |
-| Backend | Hono |
-| Validación | Zod (formularios y API) |
-| Base de datos | MongoDB, driver nativo (sin ORM/ODM) |
-| Autenticación | Better Auth (email + contraseña, sesiones server-side) |
+
+| Área                       | Tecnología                                             |
+| -------------------------- | ------------------------------------------------------ |
+| Frontend                   | React + TypeScript + Vite + HeroUI                     |
+| Datos y routing (frontend) | TanStack Query + TanStack Router                       |
+| Formularios                | TanStack Form + Zod                                    |
+| Backend                    | Hono                                                   |
+| Validación                 | Zod (formularios y API)                                |
+| Base de datos              | MongoDB, driver nativo (sin ORM/ODM)                   |
+| Autenticación              | Better Auth (email + contraseña, sesiones server-side) |
+
 
 ## Estructura del repo
 
@@ -24,7 +26,7 @@ blog-manager/
   docker-compose.yml   # MongoDB local
 ```
 
-Monorepo con **npm workspaces** (no pnpm — ver sección de decisiones).
+Monorepo con **npm workspaces** 
 
 ## Requisitos previos
 
@@ -56,8 +58,8 @@ npm run seed --workspace=apps/backend
 npm run dev
 ```
 
-- Backend: http://localhost:3000
-- Frontend: http://localhost:5173
+- Backend: [http://localhost:3000](http://localhost:3000)
+- Frontend: [http://localhost:5173](http://localhost:5173)
 
 Si preferís correrlos por separado: `npm run dev:backend` y `npm run dev:frontend` en terminales distintas.
 
@@ -75,20 +77,24 @@ Todas con contraseña `password123`:
 
 ### `apps/backend/.env`
 
-| Variable | Descripción |
-|---|---|
-| `MONGODB_URI` | Connection string de MongoDB (`mongodb://localhost:27017` con el docker-compose incluido) |
-| `DB_NAME` | Nombre de la base de datos |
-| `BETTER_AUTH_SECRET` | Clave usada para firmar sesiones/cookies. Cualquier string aleatorio largo en dev |
-| `BETTER_AUTH_URL` | URL base del backend (`http://localhost:3000` en dev) |
-| `PORT` | Puerto del servidor Hono |
-| `CORS_ORIGIN` | Origen permitido para requests con cookies (URL del frontend) |
+
+| Variable             | Descripción                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------- |
+| `MONGODB_URI`        | Connection string de MongoDB (`mongodb://localhost:27017` con el docker-compose incluido) |
+| `DB_NAME`            | Nombre de la base de datos                                                                |
+| `BETTER_AUTH_SECRET` | Clave usada para firmar sesiones/cookies. Cualquier string aleatorio largo en dev         |
+| `BETTER_AUTH_URL`    | URL base del backend (`http://localhost:3000` en dev)                                     |
+| `PORT`               | Puerto del servidor Hono                                                                  |
+| `CORS_ORIGIN`        | Origen permitido para requests con cookies (URL del frontend)                             |
+
 
 ### `apps/frontend/.env`
 
-| Variable | Descripción |
-|---|---|
+
+| Variable       | Descripción                                      |
+| -------------- | ------------------------------------------------ |
 | `VITE_API_URL` | URL del backend (`http://localhost:3000` en dev) |
+
 
 Ver `.env.example` en cada carpeta — sin credenciales reales.
 
@@ -106,28 +112,29 @@ Ver `.env.example` en cada carpeta — sin credenciales reales.
 
 ## Herramientas de IA utilizadas
 
-Todo el proyecto (backend, frontend, debugging, y este README) se construyó con **Claude Code** (modelo Claude Sonnet 5), usado como asistente conversacional dentro del editor/terminal. Uso concreto:
+Todo el proyecto (backend, frontend, debugging, y este README) se construyó con **Claude Code** (varios modelos de Claude, dependiendo de la tarea a realizar), usado como asistente conversacional dentro del editor/terminal. Uso concreto:
 
 - Generación de código en base a decisiones discutidas explícitamente antes de escribir cada parte (arquitectura, estructura de rutas, manejo de ownership, etc.), no generación ciega.
 - Consulta de documentación oficial actualizada (Better Auth, TanStack Router/Form, HeroUI + Tailwind v4) antes de implementar integraciones específicas, para evitar asumir APIs desactualizadas.
 - Debugging real durante el desarrollo, entre otros:
   - Un 500 en el registro de usuarios causado por pedirle transacciones a Better Auth contra un Mongo sin replica set.
   - Autor "desconocido" y búsqueda vacía por una discrepancia de tipos entre `userId` (string) y `_id` de usuario (ObjectId) en las agregaciones de Mongo.
-  - HeroUI renderizando sin ningún estilo, causado por tres problemas apilados de configuración de Tailwind v4 en un monorepo con workspaces (glob de archivos, plugin sin invocar, y rutas relativas apuntando a la carpeta equivocada por el hoisting de dependencias).
 - Verificación funcional real en un navegador Chrome controlado por el asistente (extensión Claude in Chrome) — flujos de registro/login/logout, protección de rutas, CRUD de artículos y búsqueda pública se probaron clickeando la UI real, no solo revisando que el código compile.
 
 ## Scripts disponibles
 
-| Comando | Descripción |
-|---|---|
-| `npm run dev` | Backend + frontend en paralelo |
-| `npm run dev:backend` | Solo backend |
-| `npm run dev:frontend` | Solo frontend |
-| `npm run dev:db` | Levanta MongoDB (Docker) |
-| `npm run dev:db:down` | Baja MongoDB |
-| `npm run seed --workspace=apps/backend` | Carga 3 usuarios de ejemplo con artículos |
-| `npm run build --workspace=apps/backend` | Compila el backend a `dist/` |
-| `npm run build --workspace=apps/frontend` | Build de producción del frontend |
+
+| Comando                                   | Descripción                               |
+| ----------------------------------------- | ----------------------------------------- |
+| `npm run dev`                             | Backend + frontend en paralelo            |
+| `npm run dev:backend`                     | Solo backend                              |
+| `npm run dev:frontend`                    | Solo frontend                             |
+| `npm run dev:db`                          | Levanta MongoDB (Docker)                  |
+| `npm run dev:db:down`                     | Baja MongoDB                              |
+| `npm run seed --workspace=apps/backend`   | Carga 3 usuarios de ejemplo con artículos |
+| `npm run build --workspace=apps/backend`  | Compila el backend a `dist/`              |
+| `npm run build --workspace=apps/frontend` | Build de producción del frontend          |
+
 
 ## Despliegue
 
