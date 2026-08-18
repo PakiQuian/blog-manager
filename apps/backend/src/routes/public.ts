@@ -72,32 +72,38 @@ publicRoutes.get("/search", async (c) => {
     return c.json({ items: [] });
   }
 
+  const { page, limit } = parsed.data;
   const regex = new RegExp(escapeRegex(parsed.data.q), "i");
   const matchingAuthors = await db.collection("user").find({ name: regex }).project({ _id: 1 }).toArray();
   const authorIds = matchingAuthors.map((a) => a._id.toString());
+  const match = { $or: [{ title: regex }, { content: regex }, { userId: { $in: authorIds } }] };
 
-  const items = await db
-    .collection("articles")
-    .aggregate([
-      { $match: { $or: [{ title: regex }, { content: regex }, { userId: { $in: authorIds } }] } },
-      { $addFields: { authorId: { $toObjectId: "$userId" } } },
-      { $lookup: { from: "user", localField: "authorId", foreignField: "_id", as: "author" } },
-      { $unwind: "$author" },
-      {
-        $project: {
-          title: 1,
-          coverImageUrl: 1,
-          createdAt: 1,
-          authorName: "$author.name",
-          excerpt: { $substrCP: ["$content", 0, 180] },
+  const [items, total] = await Promise.all([
+    db
+      .collection("articles")
+      .aggregate([
+        { $match: match },
+        { $addFields: { authorId: { $toObjectId: "$userId" } } },
+        { $lookup: { from: "user", localField: "authorId", foreignField: "_id", as: "author" } },
+        { $unwind: "$author" },
+        {
+          $project: {
+            title: 1,
+            coverImageUrl: 1,
+            createdAt: 1,
+            authorName: "$author.name",
+            excerpt: { $substrCP: ["$content", 0, 180] },
+          },
         },
-      },
-      { $sort: { createdAt: -1 } },
-      { $limit: 30 },
-    ])
-    .toArray();
+        { $sort: { createdAt: -1 } },
+        { $skip: (page - 1) * limit },
+        { $limit: limit },
+      ])
+      .toArray(),
+    db.collection("articles").countDocuments(match),
+  ]);
 
-  return c.json({ items });
+  return c.json({ items, total, page, limit, totalPages: Math.max(1, Math.ceil(total / limit)) });
 });
 
 export default publicRoutes;

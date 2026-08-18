@@ -24,10 +24,21 @@ export function useAuthors() {
   });
 }
 
-export function useArticleSearch(q: string) {
+export interface PaginatedSearchResults {
+  items: SearchResultItem[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export function useArticleSearch(q: string, page: number) {
   return useQuery({
-    queryKey: ["search", q],
-    queryFn: () => apiFetch<{ items: SearchResultItem[] }>(`/api/public/search?q=${encodeURIComponent(q)}`),
+    queryKey: ["search", q, page],
+    queryFn: () =>
+      apiFetch<PaginatedSearchResults>(
+        `/api/public/search?q=${encodeURIComponent(q)}&page=${page}`,
+      ),
     enabled: q.trim().length > 0,
   });
 }

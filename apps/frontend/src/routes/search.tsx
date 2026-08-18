@@ -1,4 +1,4 @@
-import { Input } from "@heroui/react";
+import { Input, Pagination } from "@heroui/react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import { useDebouncedValue } from "../lib/use-debounced-value";
 
 const searchSchema = z.object({
   q: z.string().catch(""),
+  page: z.coerce.number().int().min(1).catch(1),
 });
 
 export const Route = createFileRoute("/search")({
@@ -16,17 +17,17 @@ export const Route = createFileRoute("/search")({
 });
 
 function SearchPage() {
-  const { q: initialQ } = Route.useSearch();
+  const { q: initialQ, page } = Route.useSearch();
   const navigate = useNavigate({ from: "/search" });
   const reduceMotion = useReducedMotion();
 
   const [inputValue, setInputValue] = useState(initialQ);
   const debouncedQuery = useDebouncedValue(inputValue, 300);
-  const search = useArticleSearch(debouncedQuery);
+  const search = useArticleSearch(debouncedQuery, page);
   const hasQuery = debouncedQuery.trim().length > 0;
 
   useEffect(() => {
-    navigate({ search: { q: debouncedQuery || undefined }, replace: true });
+    navigate({ search: { q: debouncedQuery || undefined, page: undefined }, replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedQuery]);
 
@@ -114,6 +115,17 @@ function SearchPage() {
             </Link>
           ))}
         </motion.div>
+      )}
+
+      {hasQuery && search.data && search.data.totalPages > 1 && (
+        <div className="flex justify-center">
+          <Pagination
+            total={search.data.totalPages}
+            page={page}
+            color="primary"
+            onChange={(newPage) => navigate({ search: { q: debouncedQuery, page: newPage } })}
+          />
+        </div>
       )}
     </div>
   );

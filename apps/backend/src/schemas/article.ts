@@ -15,6 +15,8 @@ export const paginationSchema = z.object({
 
 export const searchSchema = z.object({
   q: z.string().trim().min(1, "Ingresá un término de búsqueda"),
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(50).default(12),
 });
 
 export type ArticleInput = z.infer<typeof articleInputSchema>;
