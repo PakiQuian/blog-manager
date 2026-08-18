@@ -1,5 +1,6 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArticleForm } from "../components/ArticleForm";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import { useArticle, useUpdateArticle } from "../lib/articles";
 import { requireSession } from "../lib/route-guards";
 
@@ -16,7 +17,14 @@ function EditArticlePage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-2xl mx-auto flex flex-col gap-8 animate-pulse">
+      <div className="flex flex-col gap-8 animate-pulse">
+        <Breadcrumbs
+          items={[
+            { label: "Perfil", to: "/profile" },
+            { label: "", isLoading: true },
+            { label: "Editar" },
+          ]}
+        />
         <div className="flex flex-col gap-2">
           <div className="h-8 w-56 rounded bg-content2" />
           <div className="h-4 w-72 rounded bg-content2" />
@@ -30,7 +38,7 @@ function EditArticlePage() {
 
   if (isError || !article || !article.isOwner) {
     return (
-      <div className="max-w-2xl mx-auto flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         <p className="text-danger">
           {!article || isError
             ? "No se pudo cargar el artículo."
@@ -44,7 +52,14 @@ function EditArticlePage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col gap-8">
+    <div className="flex flex-col gap-8">
+      <Breadcrumbs
+        items={[
+          { label: "Perfil", to: "/profile" },
+          { label: article.title, to: "/articles/$id", params: { id } },
+          { label: "Editar" },
+        ]}
+      />
       <header>
         <h1 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
           Editar artículo

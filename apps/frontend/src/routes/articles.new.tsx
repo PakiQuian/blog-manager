@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArticleForm } from "../components/ArticleForm";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import { useCreateArticle } from "../lib/articles";
 import { requireSession } from "../lib/route-guards";
 
@@ -13,7 +14,8 @@ function NewArticlePage() {
   const createArticle = useCreateArticle();
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col gap-8">
+    <div className="flex flex-col gap-8">
+      <Breadcrumbs items={[{ label: "Perfil", to: "/profile" }, { label: "Nuevo artículo" }]} />
       <header>
         <h1 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
           Nuevo artículo

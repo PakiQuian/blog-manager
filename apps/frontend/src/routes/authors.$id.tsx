@@ -1,5 +1,6 @@
 import { Avatar } from "@heroui/react";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import { ApiError } from "../lib/api";
 import { useAuthorDetail } from "../lib/public";
 
@@ -28,6 +29,7 @@ function AuthorDetailPage() {
   if (!author.data) {
     return (
       <div className="flex flex-col gap-8">
+        <Breadcrumbs items={[{ label: "Autores", to: "/authors" }, { label: "", isLoading: true }]} />
         <div className="flex items-center gap-4 animate-pulse">
           <div className="size-16 rounded-full bg-content2 shrink-0" />
           <div className="flex flex-col gap-2">
@@ -54,6 +56,7 @@ function AuthorDetailPage() {
 
   return (
     <div className="flex flex-col gap-8">
+      <Breadcrumbs items={[{ label: "Autores", to: "/authors" }, { label: data.name }]} />
       <header className="flex items-center gap-4">
         <Avatar name={data.name} className="shrink-0 w-16 h-16 text-large" />
         <div>

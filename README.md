@@ -102,6 +102,7 @@ Ver `.env.example` en cada carpeta — sin credenciales reales.
 - **Sin ORM**: se usa el driver nativo de `mongodb` como pide la consigna. El modelado de datos (forma de cada documento) se sostiene con interfaces TypeScript + validación Zod en cada endpoint, no con un schema de librería.
 - **Paginación y búsqueda reflejadas en la URL**: `/articles?page=2` y `/?q=texto` — permite compartir/recargar sin perder el estado, y de paso resuelve el punto opcional de la consigna.
 - **Búsqueda server-side con debounce**: el input espera 300ms sin cambios antes de consultar la API, para no disparar una request por cada tecla.
+- **Breadcrumb propio en vez del `Breadcrumbs` de HeroUI**: el componente de HeroUI usa `href` plano en cada item, sin forma de integrarlo con el `Link` de TanStack Router (navegación client-side). Se construyó un componente chico a medida (`src/components/Breadcrumbs.tsx`) para poder linkear con el router real y controlar el estado de carga (skeleton) mientras se resuelve el nombre del autor o el título del artículo.
 
 ## Herramientas de IA utilizadas
 

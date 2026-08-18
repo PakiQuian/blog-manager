@@ -9,6 +9,7 @@ import {
 } from "@heroui/react";
 import { button as buttonStyles } from "@heroui/theme";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Breadcrumbs } from "../components/Breadcrumbs";
 import { useArticle, useDeleteArticle } from "../lib/articles";
 
 export const Route = createFileRoute("/articles/$id/")({
@@ -24,7 +25,14 @@ function ArticleDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-2xl mx-auto flex flex-col gap-6 animate-pulse">
+      <div className="flex flex-col gap-6 animate-pulse">
+        <Breadcrumbs
+          items={[
+            { label: "Autores", to: "/authors" },
+            { label: "", isLoading: true },
+            { label: "", isLoading: true },
+          ]}
+        />
         <div className="aspect-video w-full rounded-large bg-content2" />
         <div className="flex flex-col gap-2">
           <div className="h-9 w-3/4 rounded bg-content2" />
@@ -41,7 +49,7 @@ function ArticleDetailPage() {
 
   if (isError || !article) {
     return (
-      <div className="max-w-2xl mx-auto flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         <p className="text-danger">No pudimos encontrar ese artículo.</p>
         <Link to="/search" className="text-primary text-sm font-medium w-fit">
           Volver a buscar
@@ -51,7 +59,18 @@ function ArticleDetailPage() {
   }
 
   return (
-    <article className="max-w-2xl mx-auto">
+    <article>
+      <div className="max-w-2xl">
+        <Breadcrumbs
+          items={[
+            { label: "Autores", to: "/authors" },
+            article.authorId
+              ? { label: article.authorName, to: "/authors/$id", params: { id: article.authorId } }
+              : { label: article.authorName },
+            { label: article.title },
+          ]}
+        />
+      </div>
       {article.coverImageUrl && (
         <img
           src={article.coverImageUrl}
@@ -59,39 +78,41 @@ function ArticleDetailPage() {
           className="w-full rounded-large mb-6 object-cover max-h-96"
         />
       )}
-      <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-2">
-        {article.title}
-      </h1>
-      <p className="text-sm text-foreground/60 mb-6">
-        {article.authorId ? (
-          <Link
-            to="/authors/$id"
-            params={{ id: article.authorId }}
-            className="hover:text-primary transition-colors font-medium"
-          >
-            {article.authorName}
-          </Link>
-        ) : (
-          article.authorName
-        )}{" "}
-        · {new Date(article.createdAt).toLocaleDateString()}
-      </p>
-      <div className="whitespace-pre-wrap leading-relaxed text-foreground">{article.content}</div>
+      <div>
+        <h1 className="font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-2">
+          {article.title}
+        </h1>
+        <p className="text-sm text-foreground/60 mb-6">
+          {article.authorId ? (
+            <Link
+              to="/authors/$id"
+              params={{ id: article.authorId }}
+              className="hover:text-primary transition-colors font-medium"
+            >
+              {article.authorName}
+            </Link>
+          ) : (
+            article.authorName
+          )}{" "}
+          · {new Date(article.createdAt).toLocaleDateString()}
+        </p>
+        <div className="whitespace-pre-wrap leading-relaxed text-foreground">{article.content}</div>
 
-      {article.isOwner && (
-        <div className="flex gap-2 mt-8">
-          <Link
-            to="/articles/$id/edit"
-            params={{ id }}
-            className={buttonStyles({ variant: "bordered" })}
-          >
-            Editar
-          </Link>
-          <Button color="danger" variant="light" onPress={onOpen}>
-            Eliminar
-          </Button>
-        </div>
-      )}
+        {article.isOwner && (
+          <div className="flex gap-2 mt-8">
+            <Link
+              to="/articles/$id/edit"
+              params={{ id }}
+              className={buttonStyles({ variant: "bordered" })}
+            >
+              Editar
+            </Link>
+            <Button color="danger" variant="light" onPress={onOpen}>
+              Eliminar
+            </Button>
+          </div>
+        )}
+      </div>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
