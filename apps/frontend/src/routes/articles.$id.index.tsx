@@ -66,8 +66,12 @@ function ArticleDetailPage() {
           items={[
             { label: "Autores", to: "/authors" },
             article.authorId
-              ? { label: article.authorName, to: "/authors/$id", params: { id: article.authorId } }
-              : { label: article.authorName },
+              ? {
+                  label: article.authorName ?? "Autor desconocido",
+                  to: "/authors/$id",
+                  params: { id: article.authorId },
+                }
+              : { label: article.authorName ?? "Autor desconocido" },
             { label: article.title },
           ]}
         />
