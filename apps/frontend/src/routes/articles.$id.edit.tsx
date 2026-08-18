@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArticleForm } from "../components/ArticleForm";
 import { Breadcrumbs } from "../components/Breadcrumbs";
@@ -17,7 +18,7 @@ function EditArticlePage() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-8 animate-pulse">
+      <div className="flex flex-col gap-8">
         <Breadcrumbs
           items={[
             { label: "Perfil", to: "/profile" },
@@ -26,12 +27,12 @@ function EditArticlePage() {
           ]}
         />
         <div className="flex flex-col gap-2">
-          <div className="h-8 w-56 rounded bg-content2" />
-          <div className="h-4 w-72 rounded bg-content2" />
+          <Skeleton className="h-8 w-56 rounded-lg" />
+          <Skeleton className="h-4 w-72 rounded-lg" />
         </div>
-        <div className="h-14 rounded-medium bg-content2" />
-        <div className="h-40 rounded-medium bg-content2" />
-        <div className="h-14 rounded-medium bg-content2" />
+        <Skeleton className="h-14 rounded-medium" />
+        <Skeleton className="h-40 rounded-medium" />
+        <Skeleton className="h-14 rounded-medium" />
       </div>
     );
   }

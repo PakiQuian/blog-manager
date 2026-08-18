@@ -1,4 +1,4 @@
-import { Input, Pagination } from "@heroui/react";
+import { Input, Pagination, Skeleton } from "@heroui/react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -64,12 +64,12 @@ function SearchPage() {
       {hasQuery && search.isLoading && (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="rounded-medium border border-divider overflow-hidden animate-pulse">
-              <div className="aspect-video bg-content2" />
+            <div key={i} className="rounded-medium border border-divider overflow-hidden">
+              <Skeleton className="aspect-video" />
               <div className="p-4 flex flex-col gap-2">
-                <div className="h-4 w-3/4 rounded bg-content2" />
-                <div className="h-3 w-1/2 rounded bg-content2" />
-                <div className="h-3 w-full rounded bg-content2" />
+                <Skeleton className="h-4 w-3/4 rounded-lg" />
+                <Skeleton className="h-3 w-1/2 rounded-lg" />
+                <Skeleton className="h-3 w-full rounded-lg" />
               </div>
             </div>
           ))}

@@ -7,6 +7,7 @@ import {
   ModalFooter,
   ModalHeader,
   Pagination,
+  Skeleton,
   useDisclosure,
 } from "@heroui/react";
 import { button as buttonStyles } from "@heroui/theme";
@@ -63,11 +64,11 @@ function ProfilePage() {
       {isLoading && (
         <div className="flex flex-col gap-3">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="flex items-center gap-4 rounded-medium border border-divider p-4 animate-pulse">
-              <div className="size-16 rounded-medium bg-content2 shrink-0" />
+            <div key={i} className="flex items-center gap-4 rounded-medium border border-divider p-4">
+              <Skeleton className="size-16 rounded-medium shrink-0" />
               <div className="flex flex-col gap-2 flex-1">
-                <div className="h-4 w-1/2 rounded bg-content2" />
-                <div className="h-3 w-1/4 rounded bg-content2" />
+                <Skeleton className="h-4 w-1/2 rounded-lg" />
+                <Skeleton className="h-3 w-1/4 rounded-lg" />
               </div>
             </div>
           ))}

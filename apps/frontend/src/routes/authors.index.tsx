@@ -1,4 +1,4 @@
-import { Avatar } from "@heroui/react";
+import { Avatar, Skeleton } from "@heroui/react";
 
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useAuthors } from "../lib/public";
@@ -24,14 +24,11 @@ function AuthorsPage() {
       {authors.isLoading && (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {[0, 1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="flex items-center gap-3 rounded-medium border border-divider p-4 animate-pulse"
-            >
-              <div className="size-10 rounded-full bg-content2 shrink-0" />
+            <div key={i} className="flex items-center gap-3 rounded-medium border border-divider p-4">
+              <Skeleton className="size-10 rounded-full shrink-0" />
               <div className="flex flex-col gap-2 flex-1">
-                <div className="h-3.5 w-2/3 rounded bg-content2" />
-                <div className="h-3 w-1/3 rounded bg-content2" />
+                <Skeleton className="h-3.5 w-2/3 rounded-lg" />
+                <Skeleton className="h-3 w-1/3 rounded-lg" />
               </div>
             </div>
           ))}

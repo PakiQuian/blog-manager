@@ -5,6 +5,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Skeleton,
   useDisclosure,
 } from "@heroui/react";
 import { button as buttonStyles } from "@heroui/theme";
@@ -25,7 +26,7 @@ function ArticleDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-6 animate-pulse">
+      <div className="flex flex-col gap-6">
         <Breadcrumbs
           items={[
             { label: "Autores", to: "/authors" },
@@ -33,15 +34,15 @@ function ArticleDetailPage() {
             { label: "", isLoading: true },
           ]}
         />
-        <div className="aspect-video w-full rounded-large bg-content2" />
+        <Skeleton className="aspect-video w-full rounded-large" />
         <div className="flex flex-col gap-2">
-          <div className="h-9 w-3/4 rounded bg-content2" />
-          <div className="h-4 w-40 rounded bg-content2" />
+          <Skeleton className="h-9 w-3/4 rounded-lg" />
+          <Skeleton className="h-4 w-40 rounded-lg" />
         </div>
         <div className="flex flex-col gap-2">
-          <div className="h-4 w-full rounded bg-content2" />
-          <div className="h-4 w-full rounded bg-content2" />
-          <div className="h-4 w-2/3 rounded bg-content2" />
+          <Skeleton className="h-4 w-full rounded-lg" />
+          <Skeleton className="h-4 w-full rounded-lg" />
+          <Skeleton className="h-4 w-2/3 rounded-lg" />
         </div>
       </div>
     );
