@@ -63,7 +63,7 @@ function RootLayout() {
         >
           Perfil
         </Link>,
-        <Button key="sign-out" variant="light" size="sm" onPress={handleSignOut}>
+        <Button key="sign-out" variant="light" onPress={handleSignOut}>
           Cerrar sesión
         </Button>,
       ]
@@ -82,7 +82,6 @@ function RootLayout() {
           as={Link}
           to="/register"
           color="primary"
-          size="sm"
           onPress={() => setIsMenuOpen(false)}
         >
           Registrarme

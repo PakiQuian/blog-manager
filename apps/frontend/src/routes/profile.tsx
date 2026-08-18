@@ -125,11 +125,11 @@ function ProfilePage() {
                 <Link
                   to="/articles/$id/edit"
                   params={{ id: article._id }}
-                  className={buttonStyles({ size: "sm", variant: "bordered" })}
+                  className={buttonStyles({ variant: "bordered" })}
                 >
                   Editar
                 </Link>
-                <Button size="sm" color="danger" variant="light" onPress={() => askDelete(article._id)}>
+                <Button color="danger" variant="light" onPress={() => askDelete(article._id)}>
                   Eliminar
                 </Button>
               </div>
