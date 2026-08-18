@@ -88,7 +88,7 @@ articles.get("/:id", async (c) => {
 
 articles.put("/:id", requireAuth, async (c) => {
   const id = c.req.param("id");
-  if (!ObjectId.isValid(id)) {
+  if (!id || !ObjectId.isValid(id)) {
     return c.json({ error: "Artículo no encontrado" }, 404);
   }
 
@@ -125,7 +125,7 @@ articles.put("/:id", requireAuth, async (c) => {
 
 articles.delete("/:id", requireAuth, async (c) => {
   const id = c.req.param("id");
-  if (!ObjectId.isValid(id)) {
+  if (!id || !ObjectId.isValid(id)) {
     return c.json({ error: "Artículo no encontrado" }, 404);
   }
 
