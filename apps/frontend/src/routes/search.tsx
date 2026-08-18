@@ -61,7 +61,7 @@ function SearchPage() {
       {!hasQuery && <p className="text-foreground/60">Escribí algo para empezar a buscar.</p>}
 
       {hasQuery && search.isLoading && (
-        <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {[0, 1, 2, 3].map((i) => (
             <div key={i} className="rounded-medium border border-divider overflow-hidden animate-pulse">
               <div className="aspect-video bg-content2" />
@@ -86,7 +86,7 @@ function SearchPage() {
       {hasQuery && search.data && search.data.items.length > 0 && (
         <motion.div
           {...reveal}
-          className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]"
+          className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
         >
           {search.data.items.map((item) => (
             <Link

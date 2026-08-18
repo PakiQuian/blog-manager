@@ -22,7 +22,7 @@ function AuthorsPage() {
       </header>
 
       {authors.isLoading && (
-        <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {[0, 1, 2, 3].map((i) => (
             <div
               key={i}
@@ -45,7 +45,7 @@ function AuthorsPage() {
       )}
 
       {authors.data && authors.data.length > 0 && (
-        <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {authors.data.map((author) => (
             <Link
               key={author.userId}

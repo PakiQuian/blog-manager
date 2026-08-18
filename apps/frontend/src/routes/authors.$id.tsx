@@ -35,7 +35,7 @@ function AuthorDetailPage() {
             <div className="h-3.5 w-24 rounded bg-content2" />
           </div>
         </div>
-        <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {[0, 1, 2].map((i) => (
             <div key={i} className="rounded-medium border border-divider overflow-hidden animate-pulse">
               <div className="aspect-video bg-content2" />
@@ -71,7 +71,7 @@ function AuthorDetailPage() {
       )}
 
       {data.articles.length > 0 && (
-        <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {data.articles.map((item) => (
             <Link
               key={item._id}
