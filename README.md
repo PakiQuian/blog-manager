@@ -138,4 +138,23 @@ Todo el proyecto (backend, frontend, debugging, y este README) se construyó con
 
 ## Despliegue
 
-No desplegado. El foco estuvo en resolver bien los requerimientos principales dentro del plazo; con MongoDB ya corriendo en Docker localmente, migrar a un entorno desplegado (Atlas para la base + cualquier PaaS para backend/frontend) solo requiere cambiar `MONGODB_URI` y las URLs en las variables de entorno — el código no tiene nada hardcodeado que lo impida.
+Pensado para **Render** (backend + frontend) y **MongoDB Atlas** (base de datos), ambos con tier gratuito. El repo incluye `render.yaml` en la raíz para desplegar los dos servicios desde el mismo repo (Render lo detecta solo al conectar el repo — "New > Blueprint").
+
+### 1. MongoDB Atlas
+
+1. Crear cuenta/cluster gratuito (M0).
+2. Database Access → crear un usuario de base de datos (usuario + contraseña, no el login de Atlas).
+3. Network Access → permitir acceso desde `0.0.0.0/0` (el free tier de Render no tiene IP de salida fija, así que hay que abrirlo a cualquier IP; la seguridad acá pasa por la contraseña del usuario de base de datos, no por el filtro de red).
+4. Copiar el connection string (botón "Connect" → "Drivers") — es el valor de `MONGODB_URI`.
+
+### 2. Render
+
+1. Conectar el repo de GitHub, elegir "New > Blueprint" para que levante `render.yaml` con los dos servicios (`blog-manager-backend` y `blog-manager-frontend`).
+2. Completar en el servicio **backend** las env vars marcadas como manuales: `MONGODB_URI` y `DB_NAME` (de Atlas), `BETTER_AUTH_SECRET` (un string random largo, nuevo para producción).
+3. Primer deploy va a fallar en el arranque o quedar con `CORS_ORIGIN`/`BETTER_AUTH_URL` vacíos — es esperado, la URL de cada servicio no existe hasta que Render la asigna. Una vez que ambos servicios tienen URL (`https://blog-manager-backend.onrender.com`, `https://blog-manager-frontend.onrender.com`):
+   - En el backend: `BETTER_AUTH_URL` = su propia URL, `CORS_ORIGIN` = URL del frontend.
+   - En el frontend: `VITE_API_URL` = URL del backend.
+4. Redeploy manual de los dos servicios. **Importante en el frontend**: `VITE_API_URL` se hornea en el build de Vite en tiempo de compilación, no se lee en runtime — cambiar la env var no alcanza, hay que disparar un build nuevo (Render lo hace solo si el redeploy es "Clear build cache & deploy", o simplemente cualquier redeploy después de guardar la env var).
+5. Verificar `https://blog-manager-backend.onrender.com/api/health` devuelve `{"ok":true}`, y probar registro/login real en el frontend desplegado — ahí se ejercita el fix de cookies cross-site (`SameSite=None; Secure`, activado automáticamente en producción vía `NODE_ENV=production`, ver `auth.ts`).
+
+Nota: el free tier de Render "duerme" el backend tras un rato sin tráfico — el primer request después de eso tarda ~30-50s en responder mientras arranca de nuevo. Es una limitación del tier gratuito, no un bug de la app.

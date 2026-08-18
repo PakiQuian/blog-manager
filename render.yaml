@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: blog-manager-backend
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build --workspace=apps/backend
+    startCommand: npm run start --workspace=apps/backend
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: MONGODB_URI
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        sync: false
+      - key: BETTER_AUTH_URL
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+
+  - type: web
+    name: blog-manager-frontend
+    runtime: static
+    buildCommand: npm install && npm run build --workspace=apps/frontend
+    staticPublishPath: apps/frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false
