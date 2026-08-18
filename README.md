@@ -67,6 +67,8 @@ Para bajar MongoDB: `npm run dev:db:down`.
 
 ### Cuentas de prueba (si corriste el seed)
 
+Solo para desarrollo local — no correr el seed contra una base compartida o pública.
+
 Todas con contraseña `password123`:
 
 - `isaac@example.com`
