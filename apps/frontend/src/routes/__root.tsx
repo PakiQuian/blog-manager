@@ -63,7 +63,7 @@ function RootLayout() {
         >
           Perfil
         </Link>,
-        <Button key="sign-out" variant="light" onPress={handleSignOut}>
+        <Button key="sign-out" variant="bordered" onPress={handleSignOut}>
           Cerrar sesión
         </Button>,
       ]
@@ -101,7 +101,7 @@ function RootLayout() {
             <NavbarContent justify="start">
               <NavbarMenuToggle
                 aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
-                className="sm:hidden"
+                className="sm:hidden cursor-pointer"
               />
               <NavbarBrand>
                 <Link
