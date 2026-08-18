@@ -106,9 +106,10 @@ function RootLayout() {
               <NavbarBrand>
                 <Link
                   to="/"
-                  className="font-display text-xl font-semibold tracking-tight text-foreground"
+                  className="flex items-center gap-2 font-display text-xl font-semibold tracking-tight text-foreground"
                   onClick={() => setIsMenuOpen(false)}
                 >
+                  <img src="/blog.png" alt="" className="size-7" />
                   Blog Manager
                 </Link>
               </NavbarBrand>
