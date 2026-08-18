@@ -3,7 +3,7 @@ services:
     name: blog-manager-backend
     runtime: node
     plan: free
-    buildCommand: npm install && npm run build --workspace=apps/backend
+    buildCommand: npm install --include=dev && npm run build --workspace=apps/backend
     startCommand: npm run start --workspace=apps/backend
     healthCheckPath: /api/health
     envVars:
@@ -25,7 +25,7 @@ services:
   - type: web
     name: blog-manager-frontend
     runtime: static
-    buildCommand: npm install && npm run build --workspace=apps/frontend
+    buildCommand: npm install --include=dev && npm run build --workspace=apps/frontend
     staticPublishPath: apps/frontend/dist
     envVars:
       - key: VITE_API_URL
